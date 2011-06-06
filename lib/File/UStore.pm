@@ -24,7 +24,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
 our @EXPORT = qw( );
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub new {
 
@@ -117,12 +117,35 @@ sub remove {
 
             unlink($destStoredFile) or return undef;
 
-
     }
     else {
         return;
     }
 
+}
+
+sub get {
+
+    my ( $self, $id ) = @_;
+
+    my $destStoredFile;
+
+    my $SSubDir;
+    my @tempstr = split (//,$id);
+    my @dirtree;
+    for (1 .. $self->{depth}){
+      push @dirtree , shift @tempstr;    
+    }
+    $SSubDir = File::Spec->catdir($self->{path} , @dirtree);
+
+    $destStoredFile = File::Spec->catfile($SSubDir , $self->{prefix}.$id);
+
+    if ( -e $destStoredFile ) {
+        open ( my $fh, '<', $destStoredFile );
+	return *$fh;
+    } else {
+	return;
+    }
 }
 
 sub getpath {
@@ -173,6 +196,10 @@ File::UStore - Perl extension to store files  on a filesystem using a non-hash U
   open( my $FH, "foo.pl" ) or die "Unable to open file ";
   # Add a file in the store
   my $id = $store->add(*$FH);
+
+  # Get file handle from id. this might not work if you have too wierd a storage scheme.
+  my $handle = $store->get($id);
+  print <$handle>;
 
   # Return the filesystem location of an id
   my $location = $store->getpath($id);
@@ -226,6 +253,12 @@ The $filename is  the file to be added in the  store. The return value
 is the id ($id) of the $filename stored. From this point on the user 
 will only be able to refer to this file using the id.
 Return undef on error. 
+
+=item $store->get($id)
+
+Return the file handle of the file from its id.
+
+Return undef on error.
 
 =item $store->getpath($id)
 

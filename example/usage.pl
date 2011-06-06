@@ -16,6 +16,11 @@ my $id = $store->add(*$file) or die "Unable to add the usage.pl file";
 close $file;
 print "usage.pl has been added with the following id in storage : $id\n";
 
+### Returns the file handle for the file represented by the id. (This might not work if your storage and access scheme is too wierd.)
+my $FH = $store->get("$id");
+
+print <$FH>;
+
 ### where is the file in the store ?
 my $location = $store->getpath("$id");
 print "usage.pl is located on the filesystem at the following location : "
