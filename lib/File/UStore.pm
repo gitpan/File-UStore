@@ -10,11 +10,11 @@ File::UStore - Perl extension to store files  on a filesystem using a non-hash U
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 use UUID;
@@ -83,6 +83,8 @@ The following methods are provided:
 
 =head2 new
 
+=over 4 
+
 =item $store = File::UStore->new( path => "/home/shantanu/.teststore", prefix => "prefix_", depth  => 5 );
 
 This constructor  returns a new C<File::UStore>  object encapsulating a
@@ -90,6 +92,8 @@ specific store. The path specifies  where the UStore is located on the
 filesystem.  If the  path  is  not specified,  the  path ~/.ustore  is
 used. The $prefix is an extension to specify the prefix appended before 
 unique file name.
+
+=back
 
 =cut
 
@@ -135,12 +139,16 @@ sub new {
 
 =head2 add
 
+=over 4 
+
 =item $store->add($filename)
 
 The $filename is the file to be added in the  store. The return value
 is the id ($id) of the $filename stored. From this point on the user 
 will only be able to refer to this file using the id.
 Return undef on error. 
+
+=back
 
 =cut
 
@@ -175,12 +183,15 @@ sub add {
 
 =head2 remove
 
+=over 4 
+
 =item $store->remove($id)
 
 The $id is the file to be removed from the store. 
 
 Return false on success and undef on error.
 
+=back
 
 =cut
 
@@ -215,11 +226,15 @@ sub remove {
 
 =head2 get
 
+=over 4 
+
 =item $store->get($id)
 
 Return the file handle of the file from its id.
 
 Return undef on error.
+
+=back
 
 =cut
 
@@ -249,11 +264,15 @@ sub get {
 
 =head2 getPath
 
+=over 4 
+
 =item $store->getPath($id)
 
 Return the filesystem location of the file from its id.
 
 Return undef on error.
+
+=back
 
 =cut
 

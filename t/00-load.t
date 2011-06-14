@@ -9,7 +9,7 @@ use Test::More tests => 1;
 use lib './lib', './blib/lib';
 
 BEGIN { 
-	use_ok('File::UStore') 
+	use_ok('File::UStore');
 
 };
 

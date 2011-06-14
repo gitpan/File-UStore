@@ -15,3 +15,9 @@ WriteMakefile(
        LICENSE	      => 'perl',
        AUTHOR         => 'Shantanu Bhadoria <shantanu.bhadoria@gmail.com>') : ()),
 );
+
+# Auto Generate the README file from the pod documentation in the module
+if ($Module::Install::AUTHOR) {
+system('pod2text lib/File/UStore.pm >README');
+}
+

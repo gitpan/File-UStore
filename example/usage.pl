@@ -1,11 +1,16 @@
 #!/usr/bin/perl
 
 use File::UStore;
+use File::Spec; # provides tmpdir sub to get a temporary directory to try out the file Storage
 
 use strict;
 use warnings;
 
-my $store = new File::UStore( path => "/tmp/.teststore", 
+my $storageFolder = File::Spec->catdir(File::Spec->tmpdir(),'.teststore');
+
+print "The Storage is at $storageFolder";
+
+my $store = new File::UStore( path => $storageFolder, 
                               prefix => "prefix_",
                               depth  => 5
                             );
