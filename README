@@ -4,7 +4,7 @@ NAME
     with depth of storage options.
 
 VERSION
-    Version 0.05
+    Version 0.06
 
 SYNOPSIS
       use File::UStore;

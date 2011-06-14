@@ -27,7 +27,7 @@ my $FH = $store->get("$id");
 print <$FH>;
 
 ### where is the file in the store ?
-my $location = $store->getpath("$id");
+my $location = $store->getPath("$id");
 print "usage.pl is located on the filesystem at the following location : "
     . $location . "\n";
 
