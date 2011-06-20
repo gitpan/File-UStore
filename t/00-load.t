@@ -22,7 +22,7 @@ BEGIN {
     cmp_ok(ref($store),'eq','File::UStore','is a File::UStore');
     open( my $file, "t/00-load.t" ) or die "Unable to open file ";
     my $id = $store->add(*$file);
-    like($id,qr/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/,'Checking if we really got a UUID as a pointer!!haha I said pointer!!');
+    like($id,qr/^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$/,'Checking if we really got a UUID as a pointer!!haha I said pointer!!');
     close ($file);
     my $location = $store->getPath("$id");
     my $handle = $store->get("$id");

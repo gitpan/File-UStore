@@ -10,11 +10,11 @@ File::UStore - Perl extension to store files  on a filesystem using a non-hash U
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 
 use UUID;

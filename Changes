@@ -1,3 +1,6 @@
 0.05 
 Unit Tests failed at pod tests. Fixed the pod for the same issue.
-0.06 Added More Comprehensive tests for the module
+0.06 
+Added More Comprehensive tests for the module
+0.07
+Fixed a breaking unit test to allow both upper case and lower case UUIDs

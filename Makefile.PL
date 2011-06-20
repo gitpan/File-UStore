@@ -12,7 +12,7 @@ WriteMakefile(
 			   'File::Path' => '0' }, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/File/UStore.pm', # retrieve abstract from module
-       LICENSE	      => 'perl',
+       LICENSE	      => 'gpl',
        AUTHOR         => 'Shantanu Bhadoria <shantanu.bhadoria@gmail.com>') : ()),
 );
 
