@@ -3,7 +3,7 @@ BEGIN {
   $File::UStore::AUTHORITY = 'cpan:SHANTANU';
 }
 BEGIN {
-  $File::UStore::VERSION = '0.11';
+  $File::UStore::VERSION = '0.12';
 }
 
 use 5.006;
