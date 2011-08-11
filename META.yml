@@ -28,5 +28,5 @@ resources:
   homepage: https://github.com/shantanubhadoria/File--UStore
   license: http://dev.perl.org/licenses/
   repository: git://github.com/shantanubhadoria/file-ustore.git
-version: 0.09
+version: 0.10
 x_authority: cpan:SHANTANU
