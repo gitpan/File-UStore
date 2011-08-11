@@ -5,14 +5,15 @@ NAME
 
 SYNOPSIS
       use File::UStore;
-      my $store = new File::UStore( path => "/home/shantanu/.teststore", 
+      my $store = new File::UStore( 
+                                  path => "/home/shantanu/.teststore", 
                                   prefix => "prefix_",
                                   depth  => 5
                                 );
   
       open( my $FH, "foo.pl" ) or die "Unable to open file ";
       # Add a file in the store
-      my $id = $store->add(*$FH);
+      my $id = $store->add($FH);
 
       # Get file handle from id. this might not work if you have too wierd a storage scheme.
       my $handle = $store->get($id);
@@ -57,36 +58,32 @@ SUBROUTINES/METHODS
   new
     $store = File::UStore->new( path => "/home/shantanu/.teststore", prefix
     => "prefix_", depth => 5 );
-        This constructor returns a new "File::UStore" object encapsulating a
-        specific store. The path specifies where the UStore is located on
-        the filesystem. If the path is not specified, the path ~/.ustore is
-        used. The $prefix is an extension to specify the prefix appended
-        before unique file name.
+         This constructor returns a new "File::UStore" object encapsulating
+         a specific store. The path specifies where the UStore is located on
+         the filesystem. If the path is not specified, the path ~/.ustore is
+         used. The $prefix is an extension to specify the prefix appended
+         before unique file name.
 
-  add
-    $store->add($filename)
-        The $filename is the file to be added in the store. The return value
-        is the id ($id) of the $filename stored. From this point on the user
-        will only be able to refer to this file using the id. Return undef
-        on error.
+    $store->add($file)
+         The $file is the handle for the file to be added in the store. The
+         return value is the id ($id) of the $file stored. From this point
+         on the user will only be able to refer to this file using the id.
+         Returns undef on error.
 
-  remove
     $store->remove($id)
-        The $id is the file to be removed from the store.
+         The $id is the file to be removed from the store.
 
-        Return false on success and undef on error.
+         Return false on success and undef on error.
 
-  get
     $store->get($id)
-        Return the file handle of the file from its id.
+         Return the file handle of the file from its id.
 
-        Return undef on error.
+         Return undef on error.
 
-  getPath
     $store->getPath($id)
-        Return the filesystem location of the file from its id.
+         Return the filesystem location of the file from its id.
 
-        Return undef on error.
+         Return undef on error.
 
 SEE ALSO
     An Analysis of Compare-by-hash - for reasons why a UUID based storage
@@ -178,38 +175,4 @@ MODULE DEPENDENCIES
     File::Path
 
     File::Spec
-
-POD ERRORS
-    Hey! The above document had some coding errors, which are explained
-    below:
-
-    Around line 85:
-        '=item' outside of any '=over'
-
-    Around line 134:
-        You forgot a '=back' before '=head2'
-
-    Around line 136:
-        '=item' outside of any '=over'
-
-    Around line 174:
-        You forgot a '=back' before '=head2'
-
-    Around line 176:
-        '=item' outside of any '=over'
-
-    Around line 214:
-        You forgot a '=back' before '=head2'
-
-    Around line 216:
-        '=item' outside of any '=over'
-
-    Around line 249:
-        You forgot a '=back' before '=head2'
-
-    Around line 251:
-        '=item' outside of any '=over'
-
-    Around line 294:
-        You forgot a '=back' before '=head1'
 

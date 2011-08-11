@@ -3,7 +3,7 @@ BEGIN {
   $File::UStore::AUTHORITY = 'cpan:SHANTANU';
 }
 BEGIN {
-  $File::UStore::VERSION = '0.10';
+  $File::UStore::VERSION = '0.11';
 }
 
 use 5.006;
@@ -12,7 +12,7 @@ use warnings;
 
 =head1 NAME
 
-File::UStore - Perl extension to store files  on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.
+File::UStore - Perl extension to store files on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.
 
 =cut
 
@@ -41,14 +41,15 @@ our @EXPORT = qw( );
 =head1 SYNOPSIS
 
   use File::UStore;
-  my $store = new File::UStore( path => "/home/shantanu/.teststore", 
+  my $store = new File::UStore( 
+                              path => "/home/shantanu/.teststore", 
                               prefix => "prefix_",
                               depth  => 5
                             );
   
   open( my $FH, "foo.pl" ) or die "Unable to open file ";
   # Add a file in the store
-  my $id = $store->add(*$FH);
+  my $id = $store->add($FH);
 
   # Get file handle from id. this might not work if you have too wierd a storage scheme.
   my $handle = $store->get($id);
@@ -81,6 +82,8 @@ section.
 The following methods are provided:
 
 =head2 new
+
+=over 5 
 
 =item $store = File::UStore->new( path => "/home/shantanu/.teststore", prefix => "prefix_", depth  => 5 );
 
@@ -131,14 +134,12 @@ sub new {
   return $self;
 }
 
-=head2 add
+=item $store->add($file)
 
-=item $store->add($filename)
-
-The $filename is the file to be added in the  store. The return value
-is the id ($id) of the $filename stored. From this point on the user 
+The $file is the handle for the file to be added in the  store. The return value
+is the id ($id) of the $file stored. From this point on the user 
 will only be able to refer to this file using the id.
-Return undef on error. 
+Returns undef on error. 
 
 =cut
 
@@ -170,8 +171,6 @@ sub add {
 
   return $uuidString;
 }
-
-=head2 remove
 
 =item $store->remove($id)
 
@@ -211,8 +210,6 @@ sub remove {
 
 }
 
-=head2 get
-
 =item $store->get($id)
 
 Return the file handle of the file from its id.
@@ -245,8 +242,6 @@ sub get {
     return;
   }
 }
-
-=head2 getPath
 
 =item $store->getPath($id)
 
@@ -289,7 +284,10 @@ sub _printPath {
 }
 
 1;
+
 __END__
+
+=back
 
 =head1 SEE ALSO
 

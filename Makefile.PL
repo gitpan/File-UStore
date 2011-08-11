@@ -9,7 +9,7 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  'ABSTRACT' => 'Perl extension to store files  on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.',
+  'ABSTRACT' => 'Perl extension to store files on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.',
   'AUTHOR' => 'Shantanu Bhadoria <shantanu at cpan dott org>',
   'BUILD_REQUIRES' => {
     'Test::More' => '0.47'
@@ -27,7 +27,7 @@ my %WriteMakefileArgs = (
     'File::Spec' => '0',
     'UUID' => '0'
   },
-  'VERSION' => '0.10',
+  'VERSION' => '0.11',
   'test' => {
     'TESTS' => 't/*.t'
   }

@@ -1,5 +1,5 @@
 {
-   "abstract" : "Perl extension to store files  on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.",
+   "abstract" : "Perl extension to store files on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.",
    "author" : [
       "Shantanu Bhadoria <shantanu at cpan dott org>"
    ],
@@ -56,7 +56,7 @@
          "web" : "http://github.com/shantanubhadoria/file-ustore"
       }
    },
-   "version" : "0.10",
+   "version" : "0.11",
    "x_authority" : "cpan:SHANTANU"
 }
 
