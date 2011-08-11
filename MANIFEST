@@ -1,10 +1,14 @@
 Changes
-Makefile.PL
+LICENSE
 MANIFEST
+META.json
+META.yml
+Makefile.PL
 README
-t/File-UStore.t
-t/pod.t
-t/pod-coverage.t
-lib/File/UStore.pm
-META.yml                                 Module meta-data (added by MakeMaker)
+dist.ini
 example/usage.pl
+lib/File/UStore.pm
+t/00-load.t
+t/pod-coverage.t
+t/pod.t
+t/release-pod-syntax.t

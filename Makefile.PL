@@ -1,23 +1,56 @@
-use 5.004;
-use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    NAME              => 'File::UStore',
-    VERSION_FROM      => 'lib/File/UStore.pm', # finds $VERSION
-    PREREQ_PM         => { 'UUID'       => '0',
-			   'File::Copy' => '0',
-			   'File::Spec' => '0',
-			   'Test::More' => '0',
-			   'File::Path' => '0' }, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/File/UStore.pm', # retrieve abstract from module
-       LICENSE	      => 'gpl',
-       AUTHOR         => 'Shantanu Bhadoria <shantanu.bhadoria@gmail.com>') : ()),
+
+use strict;
+use warnings;
+
+
+
+use ExtUtils::MakeMaker 6.30;
+
+
+
+my %WriteMakefileArgs = (
+  'ABSTRACT' => 'Perl extension to store files  on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.',
+  'AUTHOR' => 'Shantanu Bhadoria <shantanu at cpan dott org>',
+  'BUILD_REQUIRES' => {
+    'Test::More' => '0.47'
+  },
+  'CONFIGURE_REQUIRES' => {
+    'ExtUtils::MakeMaker' => '6.30'
+  },
+  'DISTNAME' => 'File-UStore',
+  'EXE_FILES' => [],
+  'LICENSE' => 'gpl',
+  'NAME' => 'File::UStore',
+  'PREREQ_PM' => {
+    'File::Copy' => '0',
+    'File::Path' => '0',
+    'File::Spec' => '0',
+    'UUID' => '0'
+  },
+  'VERSION' => '0.09',
+  'test' => {
+    'TESTS' => 't/*.t'
+  }
 );
 
-# Auto Generate the README file from the pod documentation in the module
-if ($Module::Install::AUTHOR) {
-system('pod2text lib/File/UStore.pm >README');
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
 }
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
 

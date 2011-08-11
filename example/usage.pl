@@ -1,19 +1,15 @@
 #!/usr/bin/perl
 
 use File::UStore;
-use File::Spec; # provides tmpdir sub to get a temporary directory to try out the file Storage
 
 use strict;
 use warnings;
 
-my $storageFolder = File::Spec->catdir(File::Spec->tmpdir(),'.teststore');
-
-print "The Storage is at $storageFolder";
-
-my $store = new File::UStore( path => $storageFolder, 
-                              prefix => "prefix_",
-                              depth  => 5
-                            );
+my $store = new File::UStore(
+  path   => "/tmp/.teststore",
+  prefix => "prefix_",
+  depth  => 5
+);
 
 ### to add a file in the store
 open( my $file, "usage.pl" ) or die "Unable to open file ";
@@ -27,10 +23,8 @@ my $FH = $store->get("$id");
 print <$FH>;
 
 ### where is the file in the store ?
-my $location = $store->getPath("$id");
-print "usage.pl is located on the filesystem at the following location : "
-    . $location . "\n";
+my $location = $store->getpath("$id");
+print "usage.pl is located on the filesystem at the following location : " . $location . "\n";
 
 ### remove a file from the store (based on its id)
 $store->remove("$id") or die "Unable to remove usage.pl from the store";
-

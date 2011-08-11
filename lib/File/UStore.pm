@@ -1,4 +1,10 @@
 package File::UStore;
+BEGIN {
+  $File::UStore::AUTHORITY = 'cpan:SHANTANU';
+}
+BEGIN {
+  $File::UStore::VERSION = '0.09';
+}
 
 use 5.006;
 use strict;
@@ -8,14 +14,7 @@ use warnings;
 
 File::UStore - Perl extension to store files  on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.
 
-=head1 VERSION
-
-Version 0.07
-
 =cut
-
-our $VERSION = '0.07';
-
 
 use UUID;
 use File::Copy;
@@ -28,11 +27,11 @@ use AutoLoader qw(AUTOLOAD);
 our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = (
-    'all' => [
-        qw(
+  'all' => [
+    qw(
 
-            )
-    ]
+        )
+  ]
 );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
@@ -63,9 +62,9 @@ our @EXPORT = qw( );
 
 =head1 DESCRIPTION
 
-File::UStore is a perl library based on File::HStore to store files on a filesystem using a UUID based randomised storage with folder depth control over storage.
+L<File::UStore> is a perl library based on L<File::HStore> to store files on a filesystem using a UUID based randomised storage with folder depth control over storage.
 
-File::UStore is a library that allows users to abstract file storage using a UUID based pointer instead of File Hashes to store the file. This is a critical feature for code which requires even duplicate files to get a unique identifier each time they added to a store. A Hash Storage on the other hand will not allow a file to be duplicated if it is stored multiple time in the store. This can cause issues in cases where a files may be deleted regularly as there would be no way of knowing if a second process is still using the file which the first process might be about to delete.
+L<File::UStore> is a library that allows users to abstract file storage using a UUID based pointer instead of File Hashes to store the file. This is a critical feature for code which requires even duplicate files to get a unique identifier each time they added to a store. A Hash Storage on the other hand will not allow a file to be duplicated if it is stored multiple time in the store. This can cause issues in cases where a files may be deleted regularly as there would be no way of knowing if a second process is still using the file which the first process might be about to delete.
 
 The  current version  uses UUID Module to generate universally unique identifiers everytime a file is to be stored.
 
@@ -83,8 +82,6 @@ The following methods are provided:
 
 =head2 new
 
-=over 4 
-
 =item $store = File::UStore->new( path => "/home/shantanu/.teststore", prefix => "prefix_", depth  => 5 );
 
 This constructor  returns a new C<File::UStore>  object encapsulating a
@@ -93,53 +90,48 @@ filesystem.  If the  path  is  not specified,  the  path ~/.ustore  is
 used. The $prefix is an extension to specify the prefix appended before 
 unique file name.
 
-=back
-
 =cut
 
 sub new {
 
-    my ( $this,%params) = @_;
-    
-    my $class = ref($this) || $this;
-    my $self = {};
-    bless $self, $class;
+  my ( $this, %params ) = @_;
 
-    if ( exists($params{path}) ) {
-        $self->{path} = $params{path};
-    }
-    else {
-        $self->{path} = "~/.ustore";
-    }
+  my $class = ref($this) || $this;
+  my $self = {};
+  bless $self, $class;
 
-    if ( exists($params{prefix}) ) {
-        $self->{prefix} = $params{prefix};
-    }
-    else {
-        $self->{prefix} = "";
-    }
+  if ( exists( $params{path} ) ) {
+    $self->{path} = $params{path};
+  }
+  else {
+    $self->{path} = "~/.ustore";
+  }
 
-    if ( exists($params{depth}) ) {
-        $self->{depth} = $params{depth};
-        $self->{depth} = 35 if ($params{depth}>35);
-        
-    }
-    else {
-        $self->{depth} = 3;
-    }
+  if ( exists( $params{prefix} ) ) {
+    $self->{prefix} = $params{prefix};
+  }
+  else {
+    $self->{prefix} = "";
+  }
 
-    if ( !( -e $self->{path} ) ) {
-        mkdir( $self->{path} )
-            or die "Unable to create directory : $self->{path}";
-    }
+  if ( exists( $params{depth} ) ) {
+    $self->{depth} = $params{depth};
+    $self->{depth} = 35 if ( $params{depth} > 35 );
 
+  }
+  else {
+    $self->{depth} = 3;
+  }
 
-    return $self;
+  if ( !( -e $self->{path} ) ) {
+    mkdir( $self->{path} )
+        or die "Unable to create directory : $self->{path}";
+  }
+
+  return $self;
 }
 
 =head2 add
-
-=over 4 
 
 =item $store->add($filename)
 
@@ -148,42 +140,38 @@ is the id ($id) of the $filename stored. From this point on the user
 will only be able to refer to this file using the id.
 Return undef on error. 
 
-=back
-
 =cut
 
 sub add {
 
-    my ( $self, $file) = @_;
+  my ( $self, $file ) = @_;
 
-    my ($uuid,$uuidString); 
-    UUID::generate($uuid);
-    UUID::unparse($uuid, $uuidString);
+  my ( $uuid, $uuidString );
+  UUID::generate($uuid);
+  UUID::unparse( $uuid, $uuidString );
 
-    my $SSubDir;
-    my @tempstr = split (//,$uuidString);
-    my @dirtree;
-    for (1 .. $self->{depth}){
-      push @dirtree , shift @tempstr;    
-    }
-    $SSubDir = File::Spec->catdir($self->{path} , @dirtree);
+  my $SSubDir;
+  my @tempstr = split( //, $uuidString );
+  my @dirtree;
+  for ( 1 .. $self->{depth} ) {
+    push @dirtree, shift @tempstr;
+  }
+  $SSubDir = File::Spec->catdir( $self->{path}, @dirtree );
 
-    if ( !( -e $SSubDir ) ) {
+  if ( !( -e $SSubDir ) ) {
 
-        mkpath($SSubDir) or die "Unable to create subdirectories $SSubDir in the store";
-    }
+    mkpath($SSubDir) or die "Unable to create subdirectories $SSubDir in the store";
+  }
 
-    my $destStoredFile = File::Spec->catfile($SSubDir , $self->{prefix}.$uuidString);
+  my $destStoredFile = File::Spec->catfile( $SSubDir, $self->{prefix} . $uuidString );
 
-        copy( $file, $destStoredFile )
-        or die "Unable to copy file into ustore as $destStoredFile";
+  copy( $file, $destStoredFile )
+      or die "Unable to copy file into ustore as $destStoredFile";
 
-    return $uuidString;
+  return $uuidString;
 }
 
 =head2 remove
-
-=over 4 
 
 =item $store->remove($id)
 
@@ -191,42 +179,39 @@ The $id is the file to be removed from the store.
 
 Return false on success and undef on error.
 
-=back
 
 =cut
 
 sub remove {
 
-    my ( $self, $id ) = @_;
+  my ( $self, $id ) = @_;
 
-    my $destStoredFile;
+  my $destStoredFile;
 
-    if ( !( defined($id) ) ) { return undef; }
+  if ( !( defined($id) ) ) { return undef; }
 
-    my $SSubDir;
-    my @tempstr = split (//,$id);
-    my @dirtree;
-    for (1 .. $self->{depth}){
-      push @dirtree , shift @tempstr;    
-    }
-    $SSubDir = File::Spec->catdir($self->{path} , @dirtree);
+  my $SSubDir;
+  my @tempstr = split( //, $id );
+  my @dirtree;
+  for ( 1 .. $self->{depth} ) {
+    push @dirtree, shift @tempstr;
+  }
+  $SSubDir = File::Spec->catdir( $self->{path}, @dirtree );
 
-    $destStoredFile = File::Spec->catfile($SSubDir , $self->{prefix}.$id);
+  $destStoredFile = File::Spec->catfile( $SSubDir, $self->{prefix} . $id );
 
-    if ( -e $destStoredFile ) {
+  if ( -e $destStoredFile ) {
 
-            unlink($destStoredFile) or return undef;
+    unlink($destStoredFile) or return undef;
 
-    }
-    else {
-        return;
-    }
+  }
+  else {
+    return;
+  }
 
 }
 
 =head2 get
-
-=over 4 
 
 =item $store->get($id)
 
@@ -234,37 +219,34 @@ Return the file handle of the file from its id.
 
 Return undef on error.
 
-=back
-
 =cut
 
 sub get {
 
-    my ( $self, $id ) = @_;
+  my ( $self, $id ) = @_;
 
-    my $destStoredFile;
+  my $destStoredFile;
 
-    my $SSubDir;
-    my @tempstr = split (//,$id);
-    my @dirtree;
-    for (1 .. $self->{depth}){
-      push @dirtree , shift @tempstr;    
-    }
-    $SSubDir = File::Spec->catdir($self->{path} , @dirtree);
+  my $SSubDir;
+  my @tempstr = split( //, $id );
+  my @dirtree;
+  for ( 1 .. $self->{depth} ) {
+    push @dirtree, shift @tempstr;
+  }
+  $SSubDir = File::Spec->catdir( $self->{path}, @dirtree );
 
-    $destStoredFile = File::Spec->catfile($SSubDir , $self->{prefix}.$id);
+  $destStoredFile = File::Spec->catfile( $SSubDir, $self->{prefix} . $id );
 
-    if ( -e $destStoredFile ) {
-        open ( my $fh, '<', $destStoredFile );
-	return *$fh;
-    } else {
-	return;
-    }
+  if ( -e $destStoredFile ) {
+    open( my $fh, '<', $destStoredFile );
+    return *$fh;
+  }
+  else {
+    return;
+  }
 }
 
 =head2 getPath
-
-=over 4 
 
 =item $store->getPath($id)
 
@@ -272,44 +254,42 @@ Return the filesystem location of the file from its id.
 
 Return undef on error.
 
-=back
-
 =cut
 
 sub getPath {
 
-    my ( $self, $id ) = @_;
+  my ( $self, $id ) = @_;
 
-    my $destStoredFile;
+  my $destStoredFile;
 
-    my $SSubDir;
-    my @tempstr = split (//,$id);
-    my @dirtree;
-    for (1 .. $self->{depth}){
-      push @dirtree , shift @tempstr;    
-    }
-    $SSubDir = File::Spec->catdir($self->{path} , @dirtree);
+  my $SSubDir;
+  my @tempstr = split( //, $id );
+  my @dirtree;
+  for ( 1 .. $self->{depth} ) {
+    push @dirtree, shift @tempstr;
+  }
+  $SSubDir = File::Spec->catdir( $self->{path}, @dirtree );
 
-    $destStoredFile = File::Spec->catfile($SSubDir , $self->{prefix}.$id);
+  $destStoredFile = File::Spec->catfile( $SSubDir, $self->{prefix} . $id );
 
-    if ( -e $destStoredFile ) {
-	return $destStoredFile;
-    } else {
-	return;
-    }
+  if ( -e $destStoredFile ) {
+    return $destStoredFile;
+  }
+  else {
+    return;
+  }
 }
 
 # local Function
 sub _printPath {
-    my ($self) = @_;
+  my ($self) = @_;
 
-    return $self->{path};
+  return $self->{path};
 
 }
 
 1;
 __END__
-
 
 =head1 SEE ALSO
 
@@ -319,10 +299,10 @@ http://www.usenix.org/events/hotos03/tech/full_papers/henson/henson.pdf
 
 =head1 USE CASE FOR THIS MODULE IN LIEU OF A HASH BASED STORAGE
 
-File::HStore is a similar module that
+L<File::HStore> is a similar module that
 provides File Hash based storage. However due to the nature of File
-Hashing, File::HStore doesn't allow duplicates. If the same file is
-stored a second time using File::HStore it transparently returns the
+Hashing, C<File::HStore> doesn't allow duplicates. If the same file is
+stored a second time using C<File::HStore> it transparently returns the
 same hash it had returned last time as an id without adding any new 
 file in storage due to inherent character of hash based storage, while 
 this is useful if a user doesn't want any duplicates occurring in a
@@ -385,7 +365,7 @@ L<http://search.cpan.org/dist/File-UStore/>
 
 =head1 ACKNOWLEDGEMENTS
 
-Thanks to Alexandre Dulaunoy for the excellent File::HStore module which along with my own special need provided the idea behind this module.
+Thanks to Alexandre Dulaunoy for the excellent C<File::HStore> module which along with my own special need provided the idea behind this module.
 
 =head1 COPYRIGHT AND LICENSE
 
@@ -399,14 +379,14 @@ by the Free Software Foundation; or the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
 
-=head1 Dependencies 
+=head1 MODULE DEPENDENCIES 
 
-UUID
+L<UUID>
 
-File::Copy
+L<File::Copy>
 
-File::Path
+L<File::Path>
 
-File::Spec
+L<File::Spec>
 
 =cut

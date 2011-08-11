@@ -1,18 +1,32 @@
---- #YAML:1.0
-name:                File-UStore
-version:             0.07
-abstract:            Perl extension to store files  on a filesystem using a UUID based storage
-license:             perl
-author:              
-    - Shantanu Bhadoria<shantanu.bhadoria@gmail.com>
-generated_by:        ExtUtils::MakeMaker version 6.44
-distribution_type:   module
-requires:     
-    UUID:                          0
-    File::Spec:                    0
-    File::Copy:                    0
-    File::Path:                    0
-    Test::More:                    0
+---
+abstract: 'Perl extension to store files  on a filesystem using a non-hash UUID(Universally Unique Identifier) based randomised storage with depth of storage options.'
+author:
+  - 'Shantanu Bhadoria <shantanu at cpan dott org>'
+build_requires:
+  Test::More: 0.47
+configure_requires:
+  ExtUtils::MakeMaker: 6.30
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.200012, CPAN::Meta::Converter version 2.110930001'
+license: gpl
 meta-spec:
-    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
-    version: 1.3
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: File-UStore
+no_index:
+  directory:
+    - t
+    - xt
+    - example
+requires:
+  File::Copy: 0
+  File::Path: 0
+  File::Spec: 0
+  UUID: 0
+resources:
+  bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=File-UStore
+  homepage: https://github.com/shantanubhadoria/File--UStore
+  license: http://dev.perl.org/licenses/
+  repository: git://github.com/shantanubhadoria/file-ustore.git
+version: 0.09
+x_authority: cpan:SHANTANU
